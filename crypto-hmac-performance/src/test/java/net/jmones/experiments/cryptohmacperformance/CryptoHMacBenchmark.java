@@ -41,7 +41,7 @@ public class CryptoHMacBenchmark {
     private static final String HMAC_PLAINTEXT = "this-is-the-data-to-be-hashed";
     private Mac mac;
 
-    @Setup(Level.Invocation)
+    @Setup(Level.Iteration)
     public void prepare() throws NoSuchAlgorithmException, InvalidKeyException {
         Security.addProvider(BOUNCY_CASTLE_PROVIDER);
         mac = Mac.getInstance(HMAC_ALGORITHM, BOUNCY_CASTLE_PROVIDER);

@@ -71,48 +71,30 @@ public final class CryptoHMacBenchmark_benchmark_mac_calculation_initialising_wi
             CryptoHMacBenchmark_jmhType l_cryptohmacbenchmark0_G = _jmh_tryInit_f_cryptohmacbenchmark0_G(control);
 
             control.preSetup();
+            if (CryptoHMacBenchmark_jmhType.setupIterationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
+                try {
+                    if (control.isFailing) throw new FailureAssistException();
+                    if (!l_cryptohmacbenchmark0_G.readyIteration) {
+                        l_cryptohmacbenchmark0_G.prepare();
+                        l_cryptohmacbenchmark0_G.readyIteration = true;
+                    }
+                } catch (Throwable t) {
+                    control.isFailing = true;
+                    throw t;
+                } finally {
+                    CryptoHMacBenchmark_jmhType.setupIterationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
+                }
+            } else {
+                while (CryptoHMacBenchmark_jmhType.setupIterationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
+                    if (control.isFailing) throw new FailureAssistException();
+                    if (Thread.interrupted()) throw new InterruptedException();
+                }
+            }
 
 
             control.announceWarmupReady();
             while (control.warmupShouldWait) {
-                if (CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
-                    try {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (!l_cryptohmacbenchmark0_G.readyInvocation) {
-                            l_cryptohmacbenchmark0_G.prepare();
-                            l_cryptohmacbenchmark0_G.readyInvocation = true;
-                        }
-                    } catch (Throwable t) {
-                        control.isFailing = true;
-                        throw t;
-                    } finally {
-                        CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
-                    }
-                } else {
-                    while (CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (Thread.interrupted()) throw new InterruptedException();
-                    }
-                }
                 l_cryptohmacbenchmark0_G.benchmark_mac_calculation_initialising_with_reused_provider();
-                if (CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
-                    try {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (l_cryptohmacbenchmark0_G.readyInvocation) {
-                            l_cryptohmacbenchmark0_G.readyInvocation = false;
-                        }
-                    } catch (Throwable t) {
-                        control.isFailing = true;
-                        throw t;
-                    } finally {
-                        CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
-                    }
-                } else {
-                    while (CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (Thread.interrupted()) throw new InterruptedException();
-                    }
-                }
                 res.allOps++;
             }
 
@@ -122,49 +104,30 @@ public final class CryptoHMacBenchmark_benchmark_mac_calculation_initialising_wi
             control.announceWarmdownReady();
             try {
                 while (control.warmdownShouldWait) {
-                    if (CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
-                        try {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (!l_cryptohmacbenchmark0_G.readyInvocation) {
-                                l_cryptohmacbenchmark0_G.prepare();
-                                l_cryptohmacbenchmark0_G.readyInvocation = true;
-                            }
-                        } catch (Throwable t) {
-                            control.isFailing = true;
-                            throw t;
-                        } finally {
-                            CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
-                        }
-                    } else {
-                        while (CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (Thread.interrupted()) throw new InterruptedException();
-                        }
-                    }
                     l_cryptohmacbenchmark0_G.benchmark_mac_calculation_initialising_with_reused_provider();
-                    if (CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
-                        try {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (l_cryptohmacbenchmark0_G.readyInvocation) {
-                                l_cryptohmacbenchmark0_G.readyInvocation = false;
-                            }
-                        } catch (Throwable t) {
-                            control.isFailing = true;
-                            throw t;
-                        } finally {
-                            CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
-                        }
-                    } else {
-                        while (CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (Thread.interrupted()) throw new InterruptedException();
-                        }
-                    }
                     res.allOps++;
                 }
                 control.preTearDown();
             } catch (InterruptedException ie) {
                 control.preTearDownForce();
+            }
+            if (CryptoHMacBenchmark_jmhType.tearIterationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
+                try {
+                    if (control.isFailing) throw new FailureAssistException();
+                    if (l_cryptohmacbenchmark0_G.readyIteration) {
+                        l_cryptohmacbenchmark0_G.readyIteration = false;
+                    }
+                } catch (Throwable t) {
+                    control.isFailing = true;
+                    throw t;
+                } finally {
+                    CryptoHMacBenchmark_jmhType.tearIterationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
+                }
+            } else {
+                while (CryptoHMacBenchmark_jmhType.tearIterationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
+                    if (control.isFailing) throw new FailureAssistException();
+                    if (Thread.interrupted()) throw new InterruptedException();
+                }
             }
 
             if (control.isLastIteration()) {
@@ -192,46 +155,7 @@ public final class CryptoHMacBenchmark_benchmark_mac_calculation_initialising_wi
         long realTime = 0;
         result.startTime = System.nanoTime();
         do {
-            if (CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
-                try {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (!l_cryptohmacbenchmark0_G.readyInvocation) {
-                        l_cryptohmacbenchmark0_G.prepare();
-                        l_cryptohmacbenchmark0_G.readyInvocation = true;
-                    }
-                } catch (Throwable t) {
-                    control.isFailing = true;
-                    throw t;
-                } finally {
-                    CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
-                }
-            } else {
-                while (CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (Thread.interrupted()) throw new InterruptedException();
-                }
-            }
-            long rt = System.nanoTime();
             l_cryptohmacbenchmark0_G.benchmark_mac_calculation_initialising_with_reused_provider();
-            realTime += (System.nanoTime() - rt);
-            if (CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
-                try {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (l_cryptohmacbenchmark0_G.readyInvocation) {
-                        l_cryptohmacbenchmark0_G.readyInvocation = false;
-                    }
-                } catch (Throwable t) {
-                    control.isFailing = true;
-                    throw t;
-                } finally {
-                    CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
-                }
-            } else {
-                while (CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (Thread.interrupted()) throw new InterruptedException();
-                }
-            }
             operations++;
         } while(!control.isDone);
         result.stopTime = System.nanoTime();
@@ -253,48 +177,30 @@ public final class CryptoHMacBenchmark_benchmark_mac_calculation_initialising_wi
             CryptoHMacBenchmark_jmhType l_cryptohmacbenchmark0_G = _jmh_tryInit_f_cryptohmacbenchmark0_G(control);
 
             control.preSetup();
+            if (CryptoHMacBenchmark_jmhType.setupIterationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
+                try {
+                    if (control.isFailing) throw new FailureAssistException();
+                    if (!l_cryptohmacbenchmark0_G.readyIteration) {
+                        l_cryptohmacbenchmark0_G.prepare();
+                        l_cryptohmacbenchmark0_G.readyIteration = true;
+                    }
+                } catch (Throwable t) {
+                    control.isFailing = true;
+                    throw t;
+                } finally {
+                    CryptoHMacBenchmark_jmhType.setupIterationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
+                }
+            } else {
+                while (CryptoHMacBenchmark_jmhType.setupIterationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
+                    if (control.isFailing) throw new FailureAssistException();
+                    if (Thread.interrupted()) throw new InterruptedException();
+                }
+            }
 
 
             control.announceWarmupReady();
             while (control.warmupShouldWait) {
-                if (CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
-                    try {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (!l_cryptohmacbenchmark0_G.readyInvocation) {
-                            l_cryptohmacbenchmark0_G.prepare();
-                            l_cryptohmacbenchmark0_G.readyInvocation = true;
-                        }
-                    } catch (Throwable t) {
-                        control.isFailing = true;
-                        throw t;
-                    } finally {
-                        CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
-                    }
-                } else {
-                    while (CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (Thread.interrupted()) throw new InterruptedException();
-                    }
-                }
                 l_cryptohmacbenchmark0_G.benchmark_mac_calculation_initialising_with_reused_provider();
-                if (CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
-                    try {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (l_cryptohmacbenchmark0_G.readyInvocation) {
-                            l_cryptohmacbenchmark0_G.readyInvocation = false;
-                        }
-                    } catch (Throwable t) {
-                        control.isFailing = true;
-                        throw t;
-                    } finally {
-                        CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
-                    }
-                } else {
-                    while (CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (Thread.interrupted()) throw new InterruptedException();
-                    }
-                }
                 res.allOps++;
             }
 
@@ -304,49 +210,30 @@ public final class CryptoHMacBenchmark_benchmark_mac_calculation_initialising_wi
             control.announceWarmdownReady();
             try {
                 while (control.warmdownShouldWait) {
-                    if (CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
-                        try {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (!l_cryptohmacbenchmark0_G.readyInvocation) {
-                                l_cryptohmacbenchmark0_G.prepare();
-                                l_cryptohmacbenchmark0_G.readyInvocation = true;
-                            }
-                        } catch (Throwable t) {
-                            control.isFailing = true;
-                            throw t;
-                        } finally {
-                            CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
-                        }
-                    } else {
-                        while (CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (Thread.interrupted()) throw new InterruptedException();
-                        }
-                    }
                     l_cryptohmacbenchmark0_G.benchmark_mac_calculation_initialising_with_reused_provider();
-                    if (CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
-                        try {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (l_cryptohmacbenchmark0_G.readyInvocation) {
-                                l_cryptohmacbenchmark0_G.readyInvocation = false;
-                            }
-                        } catch (Throwable t) {
-                            control.isFailing = true;
-                            throw t;
-                        } finally {
-                            CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
-                        }
-                    } else {
-                        while (CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (Thread.interrupted()) throw new InterruptedException();
-                        }
-                    }
                     res.allOps++;
                 }
                 control.preTearDown();
             } catch (InterruptedException ie) {
                 control.preTearDownForce();
+            }
+            if (CryptoHMacBenchmark_jmhType.tearIterationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
+                try {
+                    if (control.isFailing) throw new FailureAssistException();
+                    if (l_cryptohmacbenchmark0_G.readyIteration) {
+                        l_cryptohmacbenchmark0_G.readyIteration = false;
+                    }
+                } catch (Throwable t) {
+                    control.isFailing = true;
+                    throw t;
+                } finally {
+                    CryptoHMacBenchmark_jmhType.tearIterationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
+                }
+            } else {
+                while (CryptoHMacBenchmark_jmhType.tearIterationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
+                    if (control.isFailing) throw new FailureAssistException();
+                    if (Thread.interrupted()) throw new InterruptedException();
+                }
             }
 
             if (control.isLastIteration()) {
@@ -374,46 +261,7 @@ public final class CryptoHMacBenchmark_benchmark_mac_calculation_initialising_wi
         long realTime = 0;
         result.startTime = System.nanoTime();
         do {
-            if (CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
-                try {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (!l_cryptohmacbenchmark0_G.readyInvocation) {
-                        l_cryptohmacbenchmark0_G.prepare();
-                        l_cryptohmacbenchmark0_G.readyInvocation = true;
-                    }
-                } catch (Throwable t) {
-                    control.isFailing = true;
-                    throw t;
-                } finally {
-                    CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
-                }
-            } else {
-                while (CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (Thread.interrupted()) throw new InterruptedException();
-                }
-            }
-            long rt = System.nanoTime();
             l_cryptohmacbenchmark0_G.benchmark_mac_calculation_initialising_with_reused_provider();
-            realTime += (System.nanoTime() - rt);
-            if (CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
-                try {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (l_cryptohmacbenchmark0_G.readyInvocation) {
-                        l_cryptohmacbenchmark0_G.readyInvocation = false;
-                    }
-                } catch (Throwable t) {
-                    control.isFailing = true;
-                    throw t;
-                } finally {
-                    CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
-                }
-            } else {
-                while (CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (Thread.interrupted()) throw new InterruptedException();
-                }
-            }
             operations++;
         } while(!control.isDone);
         result.stopTime = System.nanoTime();
@@ -435,48 +283,30 @@ public final class CryptoHMacBenchmark_benchmark_mac_calculation_initialising_wi
             CryptoHMacBenchmark_jmhType l_cryptohmacbenchmark0_G = _jmh_tryInit_f_cryptohmacbenchmark0_G(control);
 
             control.preSetup();
+            if (CryptoHMacBenchmark_jmhType.setupIterationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
+                try {
+                    if (control.isFailing) throw new FailureAssistException();
+                    if (!l_cryptohmacbenchmark0_G.readyIteration) {
+                        l_cryptohmacbenchmark0_G.prepare();
+                        l_cryptohmacbenchmark0_G.readyIteration = true;
+                    }
+                } catch (Throwable t) {
+                    control.isFailing = true;
+                    throw t;
+                } finally {
+                    CryptoHMacBenchmark_jmhType.setupIterationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
+                }
+            } else {
+                while (CryptoHMacBenchmark_jmhType.setupIterationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
+                    if (control.isFailing) throw new FailureAssistException();
+                    if (Thread.interrupted()) throw new InterruptedException();
+                }
+            }
 
 
             control.announceWarmupReady();
             while (control.warmupShouldWait) {
-                if (CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
-                    try {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (!l_cryptohmacbenchmark0_G.readyInvocation) {
-                            l_cryptohmacbenchmark0_G.prepare();
-                            l_cryptohmacbenchmark0_G.readyInvocation = true;
-                        }
-                    } catch (Throwable t) {
-                        control.isFailing = true;
-                        throw t;
-                    } finally {
-                        CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
-                    }
-                } else {
-                    while (CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (Thread.interrupted()) throw new InterruptedException();
-                    }
-                }
                 l_cryptohmacbenchmark0_G.benchmark_mac_calculation_initialising_with_reused_provider();
-                if (CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
-                    try {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (l_cryptohmacbenchmark0_G.readyInvocation) {
-                            l_cryptohmacbenchmark0_G.readyInvocation = false;
-                        }
-                    } catch (Throwable t) {
-                        control.isFailing = true;
-                        throw t;
-                    } finally {
-                        CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
-                    }
-                } else {
-                    while (CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (Thread.interrupted()) throw new InterruptedException();
-                    }
-                }
                 res.allOps++;
             }
 
@@ -490,49 +320,30 @@ public final class CryptoHMacBenchmark_benchmark_mac_calculation_initialising_wi
             control.announceWarmdownReady();
             try {
                 while (control.warmdownShouldWait) {
-                    if (CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
-                        try {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (!l_cryptohmacbenchmark0_G.readyInvocation) {
-                                l_cryptohmacbenchmark0_G.prepare();
-                                l_cryptohmacbenchmark0_G.readyInvocation = true;
-                            }
-                        } catch (Throwable t) {
-                            control.isFailing = true;
-                            throw t;
-                        } finally {
-                            CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
-                        }
-                    } else {
-                        while (CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (Thread.interrupted()) throw new InterruptedException();
-                        }
-                    }
                     l_cryptohmacbenchmark0_G.benchmark_mac_calculation_initialising_with_reused_provider();
-                    if (CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
-                        try {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (l_cryptohmacbenchmark0_G.readyInvocation) {
-                                l_cryptohmacbenchmark0_G.readyInvocation = false;
-                            }
-                        } catch (Throwable t) {
-                            control.isFailing = true;
-                            throw t;
-                        } finally {
-                            CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
-                        }
-                    } else {
-                        while (CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (Thread.interrupted()) throw new InterruptedException();
-                        }
-                    }
                     res.allOps++;
                 }
                 control.preTearDown();
             } catch (InterruptedException ie) {
                 control.preTearDownForce();
+            }
+            if (CryptoHMacBenchmark_jmhType.tearIterationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
+                try {
+                    if (control.isFailing) throw new FailureAssistException();
+                    if (l_cryptohmacbenchmark0_G.readyIteration) {
+                        l_cryptohmacbenchmark0_G.readyIteration = false;
+                    }
+                } catch (Throwable t) {
+                    control.isFailing = true;
+                    throw t;
+                } finally {
+                    CryptoHMacBenchmark_jmhType.tearIterationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
+                }
+            } else {
+                while (CryptoHMacBenchmark_jmhType.tearIterationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
+                    if (control.isFailing) throw new FailureAssistException();
+                    if (Thread.interrupted()) throw new InterruptedException();
+                }
             }
 
             if (control.isLastIteration()) {
@@ -560,26 +371,6 @@ public final class CryptoHMacBenchmark_benchmark_mac_calculation_initialising_wi
         long time = 0;
         int currentStride = 0;
         do {
-            if (CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
-                try {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (!l_cryptohmacbenchmark0_G.readyInvocation) {
-                        l_cryptohmacbenchmark0_G.prepare();
-                        l_cryptohmacbenchmark0_G.readyInvocation = true;
-                    }
-                } catch (Throwable t) {
-                    control.isFailing = true;
-                    throw t;
-                } finally {
-                    CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
-                }
-            } else {
-                while (CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (Thread.interrupted()) throw new InterruptedException();
-                }
-            }
-            long rt = System.nanoTime();
             rnd = (rnd * 1664525 + 1013904223);
             boolean sample = (rnd & rndMask) == 0;
             if (sample) {
@@ -595,25 +386,6 @@ public final class CryptoHMacBenchmark_benchmark_mac_calculation_initialising_wi
                     buffer.half();
                     currentStride = 0;
                     rndMask = (rndMask << 1) + 1;
-                }
-            }
-            realTime += (System.nanoTime() - rt);
-            if (CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
-                try {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (l_cryptohmacbenchmark0_G.readyInvocation) {
-                        l_cryptohmacbenchmark0_G.readyInvocation = false;
-                    }
-                } catch (Throwable t) {
-                    control.isFailing = true;
-                    throw t;
-                } finally {
-                    CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
-                }
-            } else {
-                while (CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (Thread.interrupted()) throw new InterruptedException();
                 }
             }
             operations++;
@@ -636,6 +408,25 @@ public final class CryptoHMacBenchmark_benchmark_mac_calculation_initialising_wi
             CryptoHMacBenchmark_jmhType l_cryptohmacbenchmark0_G = _jmh_tryInit_f_cryptohmacbenchmark0_G(control);
 
             control.preSetup();
+            if (CryptoHMacBenchmark_jmhType.setupIterationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
+                try {
+                    if (control.isFailing) throw new FailureAssistException();
+                    if (!l_cryptohmacbenchmark0_G.readyIteration) {
+                        l_cryptohmacbenchmark0_G.prepare();
+                        l_cryptohmacbenchmark0_G.readyIteration = true;
+                    }
+                } catch (Throwable t) {
+                    control.isFailing = true;
+                    throw t;
+                } finally {
+                    CryptoHMacBenchmark_jmhType.setupIterationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
+                }
+            } else {
+                while (CryptoHMacBenchmark_jmhType.setupIterationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
+                    if (control.isFailing) throw new FailureAssistException();
+                    if (Thread.interrupted()) throw new InterruptedException();
+                }
+            }
 
 
             notifyControl.startMeasurement = true;
@@ -643,6 +434,24 @@ public final class CryptoHMacBenchmark_benchmark_mac_calculation_initialising_wi
             int batchSize = iterationParams.getBatchSize();
             benchmark_mac_calculation_initialising_with_reused_provider_ss_jmhStub(control, res, benchmarkParams, iterationParams, threadParams, blackhole, notifyControl, startRndMask, batchSize, l_cryptohmacbenchmark0_G);
             control.preTearDown();
+            if (CryptoHMacBenchmark_jmhType.tearIterationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
+                try {
+                    if (control.isFailing) throw new FailureAssistException();
+                    if (l_cryptohmacbenchmark0_G.readyIteration) {
+                        l_cryptohmacbenchmark0_G.readyIteration = false;
+                    }
+                } catch (Throwable t) {
+                    control.isFailing = true;
+                    throw t;
+                } finally {
+                    CryptoHMacBenchmark_jmhType.tearIterationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
+                }
+            } else {
+                while (CryptoHMacBenchmark_jmhType.tearIterationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
+                    if (control.isFailing) throw new FailureAssistException();
+                    if (Thread.interrupted()) throw new InterruptedException();
+                }
+            }
 
             if (control.isLastIteration()) {
                 synchronized(this.getClass()) {
@@ -664,46 +473,7 @@ public final class CryptoHMacBenchmark_benchmark_mac_calculation_initialising_wi
         result.startTime = System.nanoTime();
         for (int b = 0; b < batchSize; b++) {
             if (control.volatileSpoiler) return;
-            if (CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
-                try {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (!l_cryptohmacbenchmark0_G.readyInvocation) {
-                        l_cryptohmacbenchmark0_G.prepare();
-                        l_cryptohmacbenchmark0_G.readyInvocation = true;
-                    }
-                } catch (Throwable t) {
-                    control.isFailing = true;
-                    throw t;
-                } finally {
-                    CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
-                }
-            } else {
-                while (CryptoHMacBenchmark_jmhType.setupInvocationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (Thread.interrupted()) throw new InterruptedException();
-                }
-            }
-            long rt = System.nanoTime();
             l_cryptohmacbenchmark0_G.benchmark_mac_calculation_initialising_with_reused_provider();
-            realTime += (System.nanoTime() - rt);
-            if (CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.compareAndSet(l_cryptohmacbenchmark0_G, 0, 1)) {
-                try {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (l_cryptohmacbenchmark0_G.readyInvocation) {
-                        l_cryptohmacbenchmark0_G.readyInvocation = false;
-                    }
-                } catch (Throwable t) {
-                    control.isFailing = true;
-                    throw t;
-                } finally {
-                    CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.set(l_cryptohmacbenchmark0_G, 0);
-                }
-            } else {
-                while (CryptoHMacBenchmark_jmhType.tearInvocationMutexUpdater.get(l_cryptohmacbenchmark0_G) == 1) {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (Thread.interrupted()) throw new InterruptedException();
-                }
-            }
         }
         result.stopTime = System.nanoTime();
         result.realTime = realTime;
